@@ -10,7 +10,7 @@ const QUESTIONS = [
     options: [
       { label: "Creating something new", value: "a" },
       { label: "Solving a complex problem", value: "b" },
-      { label: "Helping others", value: "c" },
+      { label: "Helping others grow", value: "c" },
       { label: "Being recognised for my work", value: "d" },
     ]
   },
@@ -38,17 +38,6 @@ const QUESTIONS = [
   },
   {
     id: 4,
-    theme: "Social Dynamics",
-    question: "In group settings, you're usually the one who…",
-    options: [
-      { label: "Leads the conversation", value: "a" },
-      { label: "Observes quietly", value: "b" },
-      { label: "Keeps the peace", value: "c" },
-      { label: "Challenges ideas", value: "d" },
-    ]
-  },
-  {
-    id: 5,
     theme: "Stress Response",
     question: "When overwhelmed, you…",
     options: [
@@ -59,18 +48,7 @@ const QUESTIONS = [
     ]
   },
   {
-    id: 6,
-    theme: "Values",
-    question: "What bothers you most about your current life?",
-    options: [
-      { label: "Wasting my potential", value: "a" },
-      { label: "Not being financially stable", value: "b" },
-      { label: "Feeling disconnected from loved ones", value: "c" },
-      { label: "Lack of recognition", value: "d" },
-    ]
-  },
-  {
-    id: 7,
+    id: 5,
     theme: "Future Vision",
     question: "In 5 years, you see yourself…",
     options: [
@@ -81,7 +59,7 @@ const QUESTIONS = [
     ]
   },
   {
-    id: 8,
+    id: 6,
     theme: "Failure Framing",
     question: "When you fail, your first thought is…",
     options: [
@@ -92,18 +70,7 @@ const QUESTIONS = [
     ]
   },
   {
-    id: 9,
-    theme: "Time Perception",
-    question: "You spend most of your mental energy on…",
-    options: [
-      { label: "Regretting the past", value: "a" },
-      { label: "Worrying about the future", value: "b" },
-      { label: "Being present", value: "c" },
-      { label: "Planning the next move", value: "d" },
-    ]
-  },
-  {
-    id: 10,
+    id: 7,
     theme: "Cultural Expectations",
     question: "Growing up, you were told success means…",
     options: [
@@ -114,40 +81,7 @@ const QUESTIONS = [
     ]
   },
   {
-    id: 11,
-    theme: "Risk Tolerance",
-    question: "If you had ₹10 lakhs today, you'd…",
-    options: [
-      { label: "Invest in a business idea", value: "a" },
-      { label: "Save for stability", value: "b" },
-      { label: "Travel and explore", value: "c" },
-      { label: "Upskill or educate myself", value: "d" },
-    ]
-  },
-  {
-    id: 12,
-    theme: "Emotional Awareness",
-    question: "How often do you pause to understand what you're truly feeling?",
-    options: [
-      { label: "Rarely — I just push through", value: "a" },
-      { label: "Sometimes, when things get heavy", value: "b" },
-      { label: "Often — I journal or reflect", value: "c" },
-      { label: "Always — I'm very self-aware", value: "d" },
-    ]
-  },
-  {
-    id: 13,
-    theme: "Social Validation",
-    question: "How much does others' approval affect your decisions?",
-    options: [
-      { label: "A lot — I need validation", value: "a" },
-      { label: "Somewhat — key people matter", value: "b" },
-      { label: "A little — I prefer my own judgment", value: "c" },
-      { label: "Not at all — I trust myself fully", value: "d" },
-    ]
-  },
-  {
-    id: 14,
+    id: 8,
     theme: "Purpose Clarity",
     question: "Where are you on your life purpose right now?",
     options: [
@@ -158,7 +92,7 @@ const QUESTIONS = [
     ]
   },
   {
-    id: 15,
+    id: 9,
     theme: "Action vs Overthinking",
     question: "When you have a new idea, you…",
     options: [
@@ -178,24 +112,29 @@ export default function Quiz() {
 
   const question = QUESTIONS[current]
   const progress = ((current) / QUESTIONS.length) * 100
+  const isLast = current + 1 === QUESTIONS.length
 
-  const handleSelect = (value: string) => {
-    setSelected(value)
-  }
+  const handleSelect = (value: string) => setSelected(value)
 
   const handleNext = () => {
     if (!selected) return
-
     const newAnswers = { ...answers, [question.id]: selected }
     setAnswers(newAnswers)
     setSelected(null)
-
-    if (current + 1 === QUESTIONS.length) {
-      // Store answers and go to results
+    if (isLast) {
       localStorage.setItem('mindmarg_answers', JSON.stringify(newAnswers))
       router.push('/results')
     } else {
       setCurrent(current + 1)
+    }
+  }
+
+  const handleBack = () => {
+    if (current === 0) {
+      router.push('/')
+    } else {
+      setCurrent(current - 1)
+      setSelected(answers[QUESTIONS[current - 1].id] || null)
     }
   }
 
@@ -212,25 +151,60 @@ export default function Quiz() {
       color: 'white',
     }}>
 
-      {/* Progress Bar */}
-      <div style={{ width: '100%', maxWidth: '560px', marginBottom: '40px' }}>
+      <div style={{ width: '100%', maxWidth: '560px' }}>
+
+        {/* Top Row: Back + Progress label */}
         <div style={{
           display: 'flex',
+          alignItems: 'center',
           justifyContent: 'space-between',
-          marginBottom: '8px',
-          fontSize: '12px',
-          color: '#475569',
+          marginBottom: '12px',
         }}>
-          <span style={{ color: '#f97316', fontWeight: 600 }}>
-            {question.theme}
-          </span>
-          <span>{current + 1} of {QUESTIONS.length}</span>
+          {/* Back Button */}
+          <button
+            onClick={handleBack}
+            style={{
+              background: 'none',
+              border: 'none',
+              color: '#475569',
+              cursor: 'pointer',
+              fontSize: '20px',
+              padding: '4px 8px',
+              borderRadius: '6px',
+              lineHeight: 1,
+              transition: 'color 0.2s',
+            }}
+            onMouseEnter={e => (e.currentTarget.style.color = '#f97316')}
+            onMouseLeave={e => (e.currentTarget.style.color = '#475569')}
+            title="Go back"
+          >
+            ←
+          </button>
+
+          {/* Theme + Counter */}
+          <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+            <span style={{
+              fontSize: '11px',
+              letterSpacing: '2px',
+              color: '#f97316',
+              textTransform: 'uppercase',
+              fontWeight: 600,
+            }}>
+              {question.theme}
+            </span>
+            <span style={{ fontSize: '12px', color: '#334155' }}>
+              {current + 1} / {QUESTIONS.length}
+            </span>
+          </div>
         </div>
+
+        {/* Progress Bar */}
         <div style={{
           height: '3px',
-          background: 'rgba(255,255,255,0.08)',
+          background: 'rgba(255,255,255,0.07)',
           borderRadius: '999px',
           overflow: 'hidden',
+          marginBottom: '40px',
         }}>
           <div style={{
             height: '100%',
@@ -240,46 +214,63 @@ export default function Quiz() {
             transition: 'width 0.4s ease',
           }} />
         </div>
-      </div>
 
-      {/* Question */}
-      <div style={{ width: '100%', maxWidth: '560px' }}>
+        {/* Question — large, bright, Georgia serif */}
         <h2 style={{
-          fontSize: 'clamp(20px, 4vw, 28px)',
+          fontSize: 'clamp(22px, 4vw, 30px)',
           fontWeight: '700',
-          marginBottom: '32px',
-          lineHeight: '1.3',
+          marginBottom: '28px',
+          lineHeight: '1.35',
           fontFamily: 'Georgia, serif',
+          color: '#ffffff',
+          letterSpacing: '-0.3px',
         }}>
           {question.question}
         </h2>
 
-        {/* Options */}
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
-          {question.options.map((option) => (
-            <button
-              key={option.value}
-              onClick={() => handleSelect(option.value)}
-              style={{
-                padding: '16px 20px',
-                borderRadius: '12px',
-                border: `1.5px solid ${selected === option.value
-                  ? '#f97316'
-                  : 'rgba(255,255,255,0.1)'}`,
-                background: selected === option.value
-                  ? 'rgba(249,115,22,0.12)'
-                  : 'rgba(255,255,255,0.03)',
-                color: selected === option.value ? '#fff' : '#94a3b8',
-                fontSize: '15px',
-                textAlign: 'left',
-                cursor: 'pointer',
-                transition: 'all 0.2s',
-                fontFamily: 'system-ui, sans-serif',
-              }}
-            >
-              {option.label}
-            </button>
-          ))}
+        {/* Options — visually distinct from question */}
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+          {question.options.map((option) => {
+            const isSelected = selected === option.value
+            return (
+              <button
+                key={option.value}
+                onClick={() => handleSelect(option.value)}
+                style={{
+                  padding: '14px 18px',
+                  borderRadius: '10px',
+                  border: `1.5px solid ${isSelected
+                    ? '#f97316'
+                    : 'rgba(255,255,255,0.08)'}`,
+                  background: isSelected
+                    ? 'rgba(249,115,22,0.12)'
+                    : 'rgba(255,255,255,0.02)',
+                  color: isSelected ? '#ffffff' : '#64748b',
+                  fontSize: '14px',
+                  textAlign: 'left',
+                  cursor: 'pointer',
+                  transition: 'all 0.15s',
+                  fontFamily: 'system-ui, sans-serif',
+                  fontWeight: isSelected ? '600' : '400',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '12px',
+                }}
+              >
+                {/* Option dot indicator */}
+                <span style={{
+                  width: '16px',
+                  height: '16px',
+                  borderRadius: '50%',
+                  border: `2px solid ${isSelected ? '#f97316' : '#334155'}`,
+                  background: isSelected ? '#f97316' : 'transparent',
+                  flexShrink: 0,
+                  transition: 'all 0.15s',
+                }} />
+                {option.label}
+              </button>
+            )
+          })}
         </div>
 
         {/* Next Button */}
@@ -287,12 +278,12 @@ export default function Quiz() {
           onClick={handleNext}
           disabled={!selected}
           style={{
-            marginTop: '28px',
+            marginTop: '24px',
             width: '100%',
-            padding: '16px',
-            borderRadius: '12px',
-            background: selected ? '#f97316' : 'rgba(255,255,255,0.05)',
-            color: selected ? 'white' : '#334155',
+            padding: '15px',
+            borderRadius: '10px',
+            background: selected ? '#f97316' : 'rgba(255,255,255,0.04)',
+            color: selected ? 'white' : '#1e293b',
             fontWeight: '700',
             fontSize: '15px',
             border: 'none',
@@ -301,8 +292,21 @@ export default function Quiz() {
             fontFamily: 'system-ui, sans-serif',
           }}
         >
-          {current + 1 === QUESTIONS.length ? 'See My Blueprint →' : 'Next →'}
+          {isLast ? 'See My Blueprint →' : 'Next →'}
         </button>
+
+        {/* Bottom hint */}
+        <p style={{
+          textAlign: 'center',
+          marginTop: '16px',
+          color: '#1e293b',
+          fontSize: '12px',
+        }}>
+          {9 - current - 1 > 0
+            ? `${9 - current - 1} questions left`
+            : 'Last question'}
+        </p>
+
       </div>
     </main>
   )
