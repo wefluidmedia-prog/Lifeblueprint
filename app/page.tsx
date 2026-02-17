@@ -1,17 +1,6 @@
 'use client'
-import React, { useState } from 'react'
-import { useRouter } from 'next/navigation'
 
 export default function Home() {
-  const [email, setEmail] = useState('')
-  const [submitted, setSubmitted] = useState(false)
-  const router = useRouter()
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
-    router.push('/quiz')
-  }
-
   return (
     <main style={{
       minHeight: '100vh',
@@ -35,7 +24,7 @@ export default function Home() {
         marginBottom: '24px',
         fontFamily: 'system-ui, sans-serif',
       }}>
-        MindMarg — AI Life Blueprint
+        MindMarg — Life Blueprint
       </p>
 
       {/* Main Headline */}
@@ -50,7 +39,7 @@ export default function Home() {
         Feel Misaligned With<br />Your Own Life?
       </h1>
 
-      {/* Subheadline — UPDATED */}
+      {/* Subheadline */}
       <p style={{
         fontSize: 'clamp(15px, 2vw, 19px)',
         color: '#94a3b8',
@@ -59,15 +48,16 @@ export default function Home() {
         marginBottom: '16px',
         fontFamily: 'system-ui, sans-serif',
       }}>
-        Answer 15 questions. Our AI analyzes your mindset and delivers a 
-        personalized <strong style={{ color: '#e2e8f0' }}>Life Blueprint</strong> — 
-        your patterns, your blind spots, and your next 3 moves.
-        <br /><span style={{ color: '#64748b', fontSize: '14px' }}>
+        Answer 15 questions. Get a personalized{' '}
+        <strong style={{ color: '#f97316', fontWeight: '600' }}>Life Blueprint</strong>{' '}
+        — your patterns, your blind spots, and your next 3 moves.
+        <br />
+        <span style={{ color: '#64748b', fontSize: '14px' }}>
           For the generation that was never taught how to choose for themselves.
         </span>
       </p>
 
-      {/* Teaser Question — NEW */}
+      {/* Teaser Question */}
       <div style={{
         background: 'rgba(249, 115, 22, 0.08)',
         border: '1px solid rgba(249, 115, 22, 0.25)',
@@ -84,77 +74,32 @@ export default function Home() {
         "Ever made a decision that felt right to everyone — except you?"
       </div>
 
-      {/* Form or Success State */}
-      {submitted ? (
-        <div style={{ textAlign: 'center' }}>
-          <p style={{ 
-            color: '#34d399', 
-            fontSize: '18px', 
-            marginBottom: '8px',
-            fontWeight: '600' 
-          }}>
-            ✓ You're in.
-          </p>
-          <p style={{ color: '#64748b', fontSize: '14px' }}>
-            Quiz goes live in 3 days. Watch your inbox.
-          </p>
-        </div>
-      ) : (
-        <form onSubmit={handleSubmit} style={{
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-          gap: '12px',
-          width: '100%',
-          maxWidth: '480px',
-        }}>
-          <div style={{ display: 'flex', gap: '10px', width: '100%' }}>
-            <input
-              type="email"
-              required
-              placeholder="Enter your email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              style={{
-                flex: 1,
-                padding: '14px 18px',
-                borderRadius: '10px',
-                background: 'rgba(255,255,255,0.07)',
-                border: '1px solid rgba(255,255,255,0.15)',
-                color: 'white',
-                fontSize: '15px',
-                outline: 'none',
-                fontFamily: 'system-ui, sans-serif',
-              }}
-            />
-            <button type="submit" style={{
-              padding: '14px 24px',
-              borderRadius: '10px',
-              background: '#f97316',
-              color: 'white',
-              fontWeight: '700',
-              fontSize: '14px',
-              border: 'none',
-              cursor: 'pointer',
-              fontFamily: 'system-ui, sans-serif',
-              whiteSpace: 'nowrap',
-            }}>
-              Get Early Access
-            </button>
-          </div>
+      {/* Single CTA Button */}
+      <a href="/quiz" style={{
+        display: 'inline-block',
+        padding: '16px 40px',
+        borderRadius: '12px',
+        background: '#f97316',
+        color: 'white',
+        fontWeight: '700',
+        fontSize: '16px',
+        textDecoration: 'none',
+        fontFamily: 'system-ui, sans-serif',
+      }}>
+        Decode My Mindset — Free →
+      </a>
 
-          {/* Trust line */}
-          <p style={{ 
-            color: '#475569', 
-            fontSize: '12px',
-            fontFamily: 'system-ui, sans-serif',
-          }}>
-            ✦ 10 min quiz &nbsp;·&nbsp; ✦ AI report to your inbox &nbsp;·&nbsp; ✦ First 50 users get it free
-          </p>
-        </form>
-      )}
+      {/* Trust line */}
+      <p style={{
+        marginTop: '12px',
+        color: '#475569',
+        fontSize: '12px',
+        fontFamily: 'system-ui, sans-serif',
+      }}>
+        ✦ 10 min &nbsp;·&nbsp; ✦ No sign up needed &nbsp;·&nbsp; ✦ First 50 users free
+      </p>
 
-      {/* Bottom social proof — placeholder */}
+      {/* Bottom social proof */}
       <div style={{
         marginTop: '60px',
         display: 'flex',
