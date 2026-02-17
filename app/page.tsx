@@ -1,15 +1,15 @@
 'use client'
-import { useState } from 'react'
+import React, { useState } from 'react'
+import { useRouter } from 'next/navigation'
 
 export default function Home() {
   const [email, setEmail] = useState('')
   const [submitted, setSubmitted] = useState(false)
+  const router = useRouter()
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    // TODO Week 2: Connect to Supabase here
-    console.log('Email captured:', email)
-    setSubmitted(true)
+    router.push('/quiz')
   }
 
   return (
