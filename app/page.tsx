@@ -63,7 +63,7 @@ export default function Home() {
         personalized <strong style={{ color: '#e2e8f0' }}>Life Blueprint</strong> — 
         your patterns, your blind spots, and your next 3 moves.
         <br /><span style={{ color: '#64748b', fontSize: '14px' }}>
-          Built for Indians stuck between expectation and truth.
+          For the generation that was never taught how to choose for themselves.
         </span>
       </p>
 
@@ -81,7 +81,7 @@ export default function Home() {
         lineHeight: '1.6',
         fontFamily: 'Georgia, serif',
       }}>
-        "What would you do if your parents had no opinion?"
+        "Ever made a decision that felt right to everyone — except you?"
       </div>
 
       {/* Form or Success State */}
