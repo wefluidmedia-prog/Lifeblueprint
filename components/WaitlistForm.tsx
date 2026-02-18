@@ -12,9 +12,11 @@ export default function WaitlistForm() {
     e.preventDefault()
     setLoading(true)
 
-    const { error } = await supabase
-      .from("waitlist")
-      .insert([{ email }])
+    if (!supabase) return
+
+const { error } = await supabase
+  .from("waitlist")
+  .insert([{ email }])
 
     if (!error) {
       setSuccess(true)
