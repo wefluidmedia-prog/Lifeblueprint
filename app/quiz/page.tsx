@@ -102,6 +102,39 @@ const QUESTIONS = [
       { label: "Dismiss it as unrealistic", value: "d" },
     ]
   },
+  {
+    id: 10,
+    theme: "Inner Voice",
+    question: "When you imagine your future self, the dominant feeling is…",
+    options: [
+      { label: "Excitement — I can see it clearly", value: "a" },
+      { label: "Anxiety — what if I don't make it", value: "b" },
+      { label: "Numbness — I've stopped imagining", value: "c" },
+      { label: "Guilt — I should be further along by now", value: "d" },
+    ]
+  },
+  {
+    id: 11,
+    theme: "Body & Pressure",
+    question: "Before an important task, your body usually…",
+    options: [
+      { label: "Feels energized and ready", value: "a" },
+      { label: "Tightens up — chest, shoulders, jaw", value: "b" },
+      { label: "Goes numb, you just disconnect", value: "c" },
+      { label: "Sends you to your phone or food first", value: "d" },
+    ]
+  },
+  {
+    id: 12,
+    theme: "Others & Identity",
+    question: "How much do other people's opinions shape your choices?",
+    options: [
+      { label: "Barely — I move on my own signal", value: "a" },
+      { label: "A lot — I need validation before I act", value: "b" },
+      { label: "Depends who it is — some views matter more", value: "c" },
+      { label: "I pretend they don't, but they do", value: "d" },
+    ]
+  },
 ]
 
 export default function Quiz() {
@@ -215,7 +248,7 @@ export default function Quiz() {
           }} />
         </div>
 
-        {/* Question — large, bright, Georgia serif */}
+        {/* Question */}
         <h2 style={{
           fontSize: 'clamp(22px, 4vw, 30px)',
           fontWeight: '700',
@@ -228,7 +261,7 @@ export default function Quiz() {
           {question.question}
         </h2>
 
-        {/* Options — visually distinct from question */}
+        {/* Options */}
         <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
           {question.options.map((option) => {
             const isSelected = selected === option.value
@@ -239,12 +272,8 @@ export default function Quiz() {
                 style={{
                   padding: '14px 18px',
                   borderRadius: '10px',
-                  border: `1.5px solid ${isSelected
-                    ? '#f97316'
-                    : 'rgba(255,255,255,0.08)'}`,
-                  background: isSelected
-                    ? 'rgba(249,115,22,0.12)'
-                    : 'rgba(255,255,255,0.02)',
+                  border: `1.5px solid ${isSelected ? '#f97316' : 'rgba(255,255,255,0.08)'}`,
+                  background: isSelected ? 'rgba(249,115,22,0.12)' : 'rgba(255,255,255,0.02)',
                   color: isSelected ? '#ffffff' : '#64748b',
                   fontSize: '14px',
                   textAlign: 'left',
@@ -257,7 +286,6 @@ export default function Quiz() {
                   gap: '12px',
                 }}
               >
-                {/* Option dot indicator */}
                 <span style={{
                   width: '16px',
                   height: '16px',
@@ -302,8 +330,8 @@ export default function Quiz() {
           color: '#1e293b',
           fontSize: '12px',
         }}>
-          {9 - current - 1 > 0
-            ? `${9 - current - 1} questions left`
+          {QUESTIONS.length - current - 1 > 0
+            ? `${QUESTIONS.length - current - 1} questions left`
             : 'Last question'}
         </p>
 

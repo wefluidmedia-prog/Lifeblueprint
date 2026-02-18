@@ -1,5 +1,5 @@
 'use client'
-
+import WaitlistForm from "@/components/WaitlistForm"
 export default function Home() {
   return (
     <main style={{
