@@ -36,7 +36,7 @@ export default function Home() {
         marginBottom: '20px',
         letterSpacing: '-1px',
       }}>
-        Feel Misaligned With<br />Your Own Life?
+        Misaligned With<br />Your Own Life?
       </h1>
 
       {/* Subheadline */}
