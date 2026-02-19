@@ -48,7 +48,7 @@ export default function Home() {
         marginBottom: '16px',
         fontFamily: 'system-ui, sans-serif',
       }}>
-        Answer 9 questions. Get a personalized{' '}
+        12 fast questions. Get a personalized{' '}
         <strong style={{ color: '#f97316', fontWeight: '600' }}>Life Blueprint</strong>{' '}
         — your patterns, your blind spots, and your next 3 moves.
         <br />
@@ -96,7 +96,7 @@ export default function Home() {
         fontSize: '12px',
         fontFamily: 'system-ui, sans-serif',
       }}>
-        ✦ 5 min &nbsp;·&nbsp; ✦ No sign up needed &nbsp;·&nbsp; ✦ First 50 users free
+        ✦ 5 min &nbsp;·&nbsp; ✦ No account needed &nbsp;·&nbsp; ✦ Free during beta
       </p>
 
       {/* Bottom social proof */}

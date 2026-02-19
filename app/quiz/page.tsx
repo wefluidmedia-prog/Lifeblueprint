@@ -144,8 +144,18 @@ export default function Quiz() {
   const [selected, setSelected] = useState<string | null>(null)
 
   const question = QUESTIONS[current]
-  const progress = ((current) / QUESTIONS.length) * 100
+  const progress = ((current + 1) / QUESTIONS.length) * 100
   const isLast = current + 1 === QUESTIONS.length
+  const questionsLeft = QUESTIONS.length - current - 1
+
+  const getProgressMessage = () => {
+    if (current === 0) return "Most people never reflect this deeply."
+    if (current === 2) return "Good start. Most people quit before this."
+    if (current === 5) return "You're halfway. Patterns are forming."
+    if (current === 8) return "Almost there. Clarity is sharpening."
+    if (current === 10) return "Last one. This locks in your blueprint."
+    return ""
+  }
 
   const handleSelect = (value: string) => setSelected(value)
 
@@ -154,6 +164,7 @@ export default function Quiz() {
     const newAnswers = { ...answers, [question.id]: selected }
     setAnswers(newAnswers)
     setSelected(null)
+
     if (isLast) {
       localStorage.setItem('mindmarg_answers', JSON.stringify(newAnswers))
       router.push('/results')
@@ -176,7 +187,6 @@ export default function Quiz() {
       minHeight: '100vh',
       background: 'linear-gradient(135deg, #0a0a2e 0%, #1a0a2e 50%, #0a1020 100%)',
       display: 'flex',
-      flexDirection: 'column',
       alignItems: 'center',
       justifyContent: 'center',
       padding: '40px 20px',
@@ -186,77 +196,58 @@ export default function Quiz() {
 
       <div style={{ width: '100%', maxWidth: '560px' }}>
 
-        {/* Top Row: Back + Progress label */}
+        {/* Top Row */}
         <div style={{
           display: 'flex',
-          alignItems: 'center',
           justifyContent: 'space-between',
           marginBottom: '12px',
         }}>
-          {/* Back Button */}
-          <button
-            onClick={handleBack}
-            style={{
-              background: 'none',
-              border: 'none',
-              color: '#475569',
-              cursor: 'pointer',
-              fontSize: '20px',
-              padding: '4px 8px',
-              borderRadius: '6px',
-              lineHeight: 1,
-              transition: 'color 0.2s',
-            }}
-            onMouseEnter={e => (e.currentTarget.style.color = '#f97316')}
-            onMouseLeave={e => (e.currentTarget.style.color = '#475569')}
-            title="Go back"
-          >
+          <button onClick={handleBack} style={{
+            background: 'none',
+            border: 'none',
+            color: '#475569',
+            cursor: 'pointer',
+            fontSize: '20px',
+          }}>
             ←
           </button>
 
-          {/* Theme + Counter */}
-          <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-            <span style={{
-              fontSize: '11px',
-              letterSpacing: '2px',
-              color: '#f97316',
-              textTransform: 'uppercase',
-              fontWeight: 600,
-            }}>
-              {question.theme}
-            </span>
-            <span style={{ fontSize: '12px', color: '#334155' }}>
-              {current + 1} / {QUESTIONS.length}
-            </span>
-          </div>
+          <span style={{ fontSize: '12px', color: '#334155' }}>
+            {current + 1} / {QUESTIONS.length}
+          </span>
         </div>
 
         {/* Progress Bar */}
         <div style={{
-          height: '3px',
-          background: 'rgba(255,255,255,0.07)',
+          height: '4px',
+          background: 'rgba(255,255,255,0.08)',
           borderRadius: '999px',
           overflow: 'hidden',
-          marginBottom: '40px',
+          marginBottom: '16px',
         }}>
           <div style={{
             height: '100%',
             width: `${progress}%`,
             background: '#f97316',
-            borderRadius: '999px',
             transition: 'width 0.4s ease',
           }} />
         </div>
 
+        {/* Psychological Progress Text */}
+        <div style={{
+          minHeight: '24px',
+          marginBottom: '28px',
+          color: '#94a3b8',
+          fontSize: '13px',
+        }}>
+          {getProgressMessage()}
+        </div>
+
         {/* Question */}
         <h2 style={{
-          fontSize: 'clamp(22px, 4vw, 30px)',
-          fontWeight: '700',
+          fontSize: '28px',
           marginBottom: '28px',
-          lineHeight: '1.35',
           fontFamily: 'Georgia, serif',
-          color: '#ffffff',
-          letterSpacing: '-0.3px',
         }}>
           {question.question}
         </h2>
@@ -275,26 +266,10 @@ export default function Quiz() {
                   border: `1.5px solid ${isSelected ? '#f97316' : 'rgba(255,255,255,0.08)'}`,
                   background: isSelected ? 'rgba(249,115,22,0.12)' : 'rgba(255,255,255,0.02)',
                   color: isSelected ? '#ffffff' : '#64748b',
-                  fontSize: '14px',
                   textAlign: 'left',
                   cursor: 'pointer',
-                  transition: 'all 0.15s',
-                  fontFamily: 'system-ui, sans-serif',
-                  fontWeight: isSelected ? '600' : '400',
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: '12px',
                 }}
               >
-                <span style={{
-                  width: '16px',
-                  height: '16px',
-                  borderRadius: '50%',
-                  border: `2px solid ${isSelected ? '#f97316' : '#334155'}`,
-                  background: isSelected ? '#f97316' : 'transparent',
-                  flexShrink: 0,
-                  transition: 'all 0.15s',
-                }} />
                 {option.label}
               </button>
             )
@@ -310,29 +285,28 @@ export default function Quiz() {
             width: '100%',
             padding: '15px',
             borderRadius: '10px',
-            background: selected ? '#f97316' : 'rgba(255,255,255,0.04)',
+            background: selected ? '#f97316' : 'rgba(255,255,255,0.05)',
             color: selected ? 'white' : '#1e293b',
             fontWeight: '700',
-            fontSize: '15px',
             border: 'none',
             cursor: selected ? 'pointer' : 'not-allowed',
-            transition: 'all 0.2s',
-            fontFamily: 'system-ui, sans-serif',
           }}
         >
-          {isLast ? 'See My Blueprint →' : 'Next →'}
+          {isLast ? 'See My Blueprint →' : 'Continue →'}
         </button>
 
-        {/* Bottom hint */}
+        {/* Bottom Reinforcement */}
         <p style={{
           textAlign: 'center',
           marginTop: '16px',
-          color: '#1e293b',
+          color: '#475569',
           fontSize: '12px',
         }}>
-          {QUESTIONS.length - current - 1 > 0
-            ? `${QUESTIONS.length - current - 1} questions left`
-            : 'Last question'}
+          {questionsLeft > 1
+            ? `${questionsLeft} questions left — stay with it`
+            : questionsLeft === 1
+            ? `Just 1 question left`
+            : `Final step`}
         </p>
 
       </div>
