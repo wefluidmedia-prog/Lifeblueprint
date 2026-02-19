@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { calculateScores, TRAIT_LABELS, ANSWER_LABELS, Traits } from '@/lib/scoring'
-import { REPORT_SYSTEM_PROMPT } from '@/lib/prompts'
+import { REPORT_SYSTEM_PROMPT, buildUserPrompt } from '@/lib/prompts'
 
 export async function POST(req: NextRequest) {
   try {
@@ -12,27 +12,7 @@ export async function POST(req: NextRequest) {
 
     const scores = calculateScores(answers)
 
-    const answerContext = Object.entries(answers)
-      .map(([qId, val]) => {
-        const label = ANSWER_LABELS[Number(qId)]?.[val as string]
-        return label ? `Q${qId}: "${label}"` : null
-      })
-      .filter(Boolean)
-      .join('\n')
-
-    const scoreSummary = Object.entries(scores)
-      .map(([key, val]) => `${TRAIT_LABELS[key as keyof Traits]}: ${val}/100`)
-      .join('\n')
-
-    const userPrompt = `Here is the person's psychometric data:
-
-TRAIT SCORES:
-${scoreSummary}
-
-THEIR ACTUAL ANSWERS:
-${answerContext}
-
-Generate their personalized behavioral report now.`
+    const userPrompt = buildUserPrompt(answers, scores)
 
     const response = await fetch('https://api.openai.com/v1/chat/completions', {
       method: 'POST',
@@ -41,9 +21,9 @@ Generate their personalized behavioral report now.`
         'Authorization': `Bearer ${process.env.OPENAI_API_KEY}`,
       },
       body: JSON.stringify({
-        model: 'gpt-4o',
-        max_tokens: 1500,
-        temperature: 0.5,
+        model: 'gpt-4o',       // mini skips rules under pressure — 4o follows them
+        max_tokens: 1200,      // bumped slightly to avoid cut-off reports
+        temperature: 0.8,      // higher = more human, less robotic
         messages: [
           { role: 'system', content: REPORT_SYSTEM_PROMPT },
           { role: 'user', content: userPrompt },
